@@ -7,6 +7,9 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 
+/**
+ * Class EntryFactoryTest
+ */
 class EntryFactoryTest extends TestCase
 {
     use DatabaseTransactions;

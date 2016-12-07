@@ -1,22 +1,16 @@
 <?php
 
-use App\Events\EntryCreationRequested;
-use eig\UUID\Facades\UUID;
+use App\Entries\Entry;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 /**
- * Class CreateEntryTest
+ * Class EditEntryTest
  */
-class CreateEntryTest extends TestCase
+class EditEntryTest extends TestCase
 {
     use DatabaseTransactions;
-
-    /**
-     * @var
-     */
-    protected $id;
 
     /**
      * @var
@@ -34,42 +28,35 @@ class CreateEntryTest extends TestCase
     protected $phone;
 
     /**
+     * @var
+     */
+    protected $entry;
+
+    /**
      * setUp
      */
     public function setUp ()
     {
         parent::setUp();
-        $this->id = UUID::generate();
+        $this->entry = Entry::first();
         $this->last_name = 'smith';
         $this->first_name = 'snuffy';
         $this->phone = '123-456-7890';
     }
 
     /**
-     * testFireCreateEntryRequestedEvent
+     * testEdit
      *
      * @test
      */
-    public function testFireCreateEntryRequestedEvent()
+    public function testEdit()
     {
-        event(new EntryCreationRequested($this->last_name, $this->first_name, $this->phone));
-        $this->seeInDatabase('entries', [
+        $this->json('PATCH', '/api/entries/' . $this->entry->id, [
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
-            'phone' => $this->phone
-        ]);
-    }
-
-    /**
-     * testCreateEntryRoute
-     */
-    public function testCreateEntryRoute()
-    {
-        $this->json('POST', '/api/entries/', [
-            'first_name' => $this->first_name,
-            'last_name' => $this->last_name,
-            'phone' => $this->phone
-        ])->seeJson(['saved' => true]);
+            'phone' => $this->phone,
+            'id' => $this->entry->id
+        ])->seeJson(['saved' => true, 'id' => $this->entry->id]);
         $this->seeInDatabase('entries', [
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
