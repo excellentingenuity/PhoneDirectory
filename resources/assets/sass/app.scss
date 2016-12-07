@@ -7,3 +7,29 @@
 
 // Bootstrap
 @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+
+@import "components/entry-card";
+@import "components/entry-form";
+
+.directory-header {
+  text-align: center;
+}
+.entry-list {
+  max-height: 50em;
+  overflow-y: scroll;
+  padding: 1em;
+}
+.btn-add {
+  text-align: center;
+  span {
+    font-size: 2em;
+    text-align: center;
+  }
+}
+#search-box {
+  margin-bottom: .25em;
+}
+footer {
+  text-align: center;
+  margin-top:.75em;
+}
